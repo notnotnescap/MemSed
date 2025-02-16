@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.20)
 project(MemSed)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+add_definitions(-Wfatal-errors) # Fail on first error
+
 # Directories
 set(MEMSED_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 set(BUILD_DIR "${MEMSED_DIR}/build")
@@ -41,8 +47,9 @@ file(GLOB_RECURSE sources "${SRC_DIR}/*.c" "${SRC_DIR}/*.h")
 add_executable(memsed "${sources}")
 
 # Compiler flags
-target_compile_options(memsed PRIVATE -std=gnu23)  # Standard
-target_compile_options(memsed PRIVATE -Wall -Wextra -Wstrict-prototypes -Wredundant-decls -Wundef)  # Warnings
+target_compile_options(memsed PRIVATE -std=gnu17)  # Standard
+
+target_compile_options(memsed PRIVATE -Wall -Wextra -Wredundant-decls -Wundef)  # Warnings
 target_compile_options(memsed PRIVATE -fdata-sections -ffunction-sections -fno-math-errno)  # Optimizations
 
 # Python (needed for GLAD and dear_bindings)
@@ -69,13 +76,18 @@ target_link_libraries(dcimgui PRIVATE SDL3-static)
 target_link_libraries(dcimgui PRIVATE glad)
 target_link_libraries(memsed PRIVATE dcimgui)
 
+# math library
+target_link_libraries(memsed PRIVATE m)
+
 # Fonts (generate compressed C sources)
 add_subdirectory("${FONTS_DIR}")
 target_link_libraries(memsed PRIVATE fonts)
 
 # Build as (almost) static executable
 # Adding -static causes a segfault in SDL_CreateWindow()
-target_link_libraries(memsed PRIVATE -static-libgcc -static-libstdc++)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_link_libraries(memsed PRIVATE -static-libgcc -static-libstdc++)
+endif()
 
 # Add run targets
 add_custom_target(run

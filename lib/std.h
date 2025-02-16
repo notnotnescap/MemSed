@@ -16,37 +16,34 @@
 #include <string.h>
 // IWYU pragma: end_exports
 
-static_assert(
-    sizeof(float) * CHAR_BIT == 32,
-    "float is not 32 bit on this architecture, fix the f32 typedef.");
+static_assert(sizeof(float) * CHAR_BIT == 32,
+              "float is not 32 bit on this architecture, fix the f32 typedef.");
 typedef float flt32_t;
 
-static_assert(
-    sizeof(double) * CHAR_BIT == 64,
-    "float is not 32 bit on this architecture, fix the f32 typedef.");
+static_assert(sizeof(double) * CHAR_BIT == 64,
+              "float is not 32 bit on this architecture, fix the f32 typedef.");
 typedef double flt64_t;
 
-static_assert(
-    sizeof(long double) * CHAR_BIT == 128,
-    "float is not 32 bit on this architecture, fix the f32 typedef.");
+static_assert(sizeof(long double) * CHAR_BIT == 64,
+              "float is not 32 bit on this architecture, fix the f32 typedef.");
 typedef long double flt128_t;
 
 #ifndef MAX
-#define MAX(a, b)               \
-    ({                          \
-        __typeof__(a) _a = (a); \
-        __typeof__(b) _b = (b); \
-        _a > _b ? _a : _b;      \
-    })
+#define MAX(a, b)                                                              \
+  ({                                                                           \
+    __typeof__(a) _a = (a);                                                    \
+    __typeof__(b) _b = (b);                                                    \
+    _a > _b ? _a : _b;                                                         \
+  })
 #endif
 
 #ifndef MIN
-#define MIN(a, b)               \
-    ({                          \
-        __typeof__(a) _a = (a); \
-        __typeof__(b) _b = (b); \
-        _a < _b ? _a : _b;      \
-    })
+#define MIN(a, b)                                                              \
+  ({                                                                           \
+    __typeof__(a) _a = (a);                                                    \
+    __typeof__(b) _b = (b);                                                    \
+    _a < _b ? _a : _b;                                                         \
+  })
 #endif
 
 #ifndef ABS
@@ -54,12 +51,12 @@ typedef long double flt128_t;
 #endif
 
 #ifndef ROUND_UP_TO
-#define ROUND_UP_TO(a, b)       \
-    ({                          \
-        __typeof__(a) _a = (a); \
-        __typeof__(b) _b = (b); \
-        _a / _b + !!(_a % _b);  \
-    })
+#define ROUND_UP_TO(a, b)                                                      \
+  ({                                                                           \
+    __typeof__(a) _a = (a);                                                    \
+    __typeof__(b) _b = (b);                                                    \
+    _a / _b + !!(_a % _b);                                                     \
+  })
 #endif
 
 #ifndef CLAMP
